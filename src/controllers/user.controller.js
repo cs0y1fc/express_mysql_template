@@ -36,6 +36,34 @@ exports.getAllUsers = async (req, res) => {
     }
 }
 
+exports.getUserById = async (req, res) => {
+    let connection; // declarada fuera para que se pueda acceder desde cada bloque
+    
+    try {
+        const idUser = req.params.id;
+        connection = await db.getConnection();
+        const [result] = await connection.query("select * from users where id=?", [idUser]);
+        // TODO: Verificar por que no sale el mensaje "No se encontraron usuarios"
+        if (result.length === 0) {
+            return res.status(200).json({
+                message: "No se encontraron usuario"
+            });
+        }
+        return res.status(200).json({
+            message: "Usuarios encontrados",
+            result
+        });
+    } catch (error) {
+        return res.status(500).json({
+            message: "No se pudo obtener los usuarios",
+            error: "Error 500: " + error
+        });
+    } finally {
+        connection.release();
+    }
+}
+
+
 exports.createUser = async (req, res) => {
     let connection;
     try {
@@ -72,4 +100,3 @@ exports.createUser = async (req, res) => {
 
 // TODO: getUserById, updateUser, deleteUser
 
-export.getUserById
