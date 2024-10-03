@@ -71,3 +71,5 @@ exports.createUser = async (req, res) => {
 }
 
 // TODO: getUserById, updateUser, deleteUser
+
+export.getUserById

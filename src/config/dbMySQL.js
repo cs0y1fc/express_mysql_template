@@ -13,6 +13,8 @@ try {
         port: process.env.DB_PORT,
         database: process.env.DB_NAME,
         connectionLimit: 5, // Máx de conexiones en el pool
+        waitForConnections: true,
+        queueLimit: 0
     });
     console.log(`Conectado al servidor de MySQL: ${process.env.DB_HOST}`);
 } catch (error) {
