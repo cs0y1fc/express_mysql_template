@@ -117,19 +117,35 @@ exports.updateUser = async (req, res) => {
         const sql = "update users set username = ?, email = ?, password = ? where id = idUser";
         await connection.query(sql, [idUser, username, email, password]);
         return res.status(201).json({
-            message: "Usuario registrado correctamente",
+            message: "Usuario actualizado correctamente",
             user: { id, username, email, hashPassword }
         });
     
     } catch (error) {
         return res.status(500).json({
-            message: "No se pudo registrar usuario",
+            message: "No se pudo actualizar usuario",
             error: "Error 500: " + error
         });
+    } finally {
+        connection.release();
     }
 }
 
 exports.deleteUser = async (req, res) => {
+    try {
+        const idUser = req.params.id;
+        connection = await db.getConnection();
+        const sql = "delete from users where id = idUser";
+        await connection.query(sql)
+    } catch (error) {
+        return res.status(500).json({
+            message: "No se pudo actualizar usuario",
+            error: "Error 500: " + error
+        });
+    } finally {
+        connection.release();
+        
+    }
     
 }
 
