@@ -114,7 +114,7 @@ exports.updateUser = async (req, res) => {
         }
         // destructuring object
         const { username, email, password } = req.body;
-        const sql = "update users set username = (?), email = (?), password = (?), creatAt = (default), updateAt = (default) where id = idUser";
+        const sql = "update users set username = ?, email = ?, password = ? where id = idUser";
         await connection.query(sql, [idUser, username, email, password]);
         return res.status(201).json({
             message: "Usuario registrado correctamente",
