@@ -100,3 +100,36 @@ exports.createUser = async (req, res) => {
 
 // TODO: getUserById, updateUser, deleteUser
 
+exports.updateUser = async (req, res) => {
+    let connection;
+    try {
+        const idUser = req.params.id;
+        connection = await db.getConnection();
+        const { error } = userSchema.validate(req.body);
+        if (error) {
+            return res.status(400).json({
+                message: error.details[0].message,
+                error: "Error de validación"
+            });
+        }
+        // destructuring object
+        const { username, email, password } = req.body;
+        const sql = "update users set username = (?), email = (?), password = (?), creatAt = (default), updateAt = (default) where id = idUser";
+        await connection.query(sql, [idUser, username, email, password]);
+        return res.status(201).json({
+            message: "Usuario registrado correctamente",
+            user: { id, username, email, hashPassword }
+        });
+    
+    } catch (error) {
+        return res.status(500).json({
+            message: "No se pudo registrar usuario",
+            error: "Error 500: " + error
+        });
+    }
+}
+
+exports.deleteUser = async (req, res) => {
+    
+}
+
